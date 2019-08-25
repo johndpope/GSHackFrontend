@@ -1,4 +1,4 @@
-# dashboard-vue
+# GSHackFrontend
 
 ## Project setup
 ```
