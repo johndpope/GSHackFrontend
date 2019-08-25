@@ -6,12 +6,11 @@
     .client-container(v-for="client in parsed_clients", :key="client.id", @click="goToClient(client.id)")
       b-row.m-1.d-flex.align-items-center.justify-content-between(style="text-align: center;")
         b-col
-          Avatar.mr-2(:size="'xs'", :src="'https://scontent-qro1-1.xx.fbcdn.net/v/t1.0-1/p100x100/61589514_1886459874789225_8612030699794333696_n.jpg?_nc_cat=102&_nc_oc=AQnKUDKgUkolo6GCOY0jb3g3FikF-aEsMMMj9JoP0Vl6JVcp784AGFcFW8dWsyLd_hs&_nc_ht=scontent-qro1-1.xx&oh=2bb22dfa6b79bbd12bcd53143089779f&oe=5E0E98FD'")
-          div {{client.name}}
+          Avatar.mr-2(:size="'xs'", :src="'https://www.healthykids.org/_img2017/kid07.jpg'")
         b-col(style="text-align: center;")
-          div Productos: {{client.products}}
-          div.status-box(:style="{'border-color': client.color}") {{client.activity}}
-
+          div {{client.name}}
+          div {{client.id}}
+    empty-message(v-if="!parsed_clients.length", message="No hay clientes")
     b-modal(v-model="new_client_dialog", centered, title="Agregar nuevo cliente", cancel-title="Cancelar", ok-title="Crear", ok-variant="success", :ok-disabled="can_create", @ok="createClient", @show="resetModal")
       b-container(fluid)
         label Nombre:
@@ -47,11 +46,9 @@
         users: state => state.users
       }),
       parsed_clients () {
-        let self = this
+        if (!this.users.length) return []
         return this.users.map(c => {
-          let data = self.statusColor(c.status)
-          c.color = data.color
-          c.activity = data.activity
+          c.name = c.data.name
           return c
         })
       },
@@ -76,25 +73,6 @@
             }
           }
         })
-      },
-      statusColor(status){
-        let color = '';
-        let activity = ''
-        switch (status) {
-          case 'buying':
-            color = '#0374d6'
-            activity = 'Comprando'
-            break
-          case 'help':
-            color = '#f0401d'
-            activity = 'Necesita ayuda'
-            break
-          case 'paying':
-            color = '#41a602'
-            activity = 'Quiere pagar'
-            break
-        }
-        return {color: color, activity: activity}
       },
       goToClient(client_id){
         this.$router.push({name: 'client', params: { client_id: client_id } })

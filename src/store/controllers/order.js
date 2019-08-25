@@ -30,9 +30,7 @@ let actions = {
         snapshot.forEach((doc) => {
           orders.push({
             id: doc.id,
-            user: doc.data().user,
-            status: doc.data().status,
-            items: doc.data().items,
+            data: doc.data()
           })
         })
         commit('setItems', orders)

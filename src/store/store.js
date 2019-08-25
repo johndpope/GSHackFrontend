@@ -5,6 +5,7 @@ import { db } from '@/main'
 import user from './controllers/user'
 import order from './controllers/order'
 import product from './controllers/product'
+import helpers from './controllers/helpers'
 
 Vue.use(Vuex)
 
@@ -22,6 +23,10 @@ export default new Vuex.Store({
 
   },
   modules: {
+    helpers: {
+      namespaced: true,
+      ...helpers
+    },
     user: {
       namespaced: true,
       ...user

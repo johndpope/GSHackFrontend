@@ -30,11 +30,7 @@ let actions = {
         snapshot.forEach((doc) => {
           users.push({
             id: doc.id,
-            name: doc.data().name,
-            phone: doc.data().telephone,
-            address: doc.data().address,
-            status: 'buying',
-            products: 22
+            data: doc.data()
           })
         })
         commit('setItems', users)
@@ -49,7 +45,10 @@ let actions = {
       if (!doc.exists) {
         if(params.callback) params.callback({error: `No se econtró el ${resource_name}.`})
       } else {
-        if(params.callback) params.callback(doc.data())
+        if(params.callback) params.callback({
+          id: doc.id,
+          data: doc.data()
+        })
       }
     }).catch((e) => {
       console.log('Error getting user.', e)
@@ -57,10 +56,12 @@ let actions = {
     })
   },
   async create ({ commit }, params) {
-    await db.collection('users').add({
-      name: params.name,
-      telephone: params.phone,
-      address: params.address,
+
+    await db.collection('users').add({ value: {
+        name: params.name,
+        telephone: params.phone,
+        address: params.address,
+      }
     }).then((response) => {
       if (response) {
         if(params.callback) params.callback(response)

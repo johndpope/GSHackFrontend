@@ -5,12 +5,12 @@ import router from '../router'
 import { validAccess } from "./path-manager";
 
 const instance = axios.create({
-  baseURL: 'http://localhost:3030/v1/'//process.env.VUE_APP_API
+  baseURL: 'https://evil-tiger-94.localtunnel.me/api/v1/'//process.env.VUE_APP_API
 })
 
 instance.interceptors.request.use( async config => {
   Vue.prototype.$Progress.start()
-  store.commit('loader/addRequest')
+  //store.commit('loader/addRequest')
 
   /*if (await validAccess(config.url) == false) {
     console.log('%c not pass', 'color : #ff0000')
@@ -30,10 +30,6 @@ instance.interceptors.request.use( async config => {
 })
 
 instance.interceptors.response.use(response => {
-  store.commit('loader/subtractRequest')
-  if (!store.getters['loader/isAxiosLoading']) {
-    Vue.prototype.$Progress.finish()
-  }
 
   Vue.prototype.$auth.setToken(response)
   return response

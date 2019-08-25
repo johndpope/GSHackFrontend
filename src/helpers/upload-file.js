@@ -1,4 +1,5 @@
 import { toBase64 } from './file-converter'
+import fi from "element-ui/src/locale/lang/fi";
 
 export const UploadFile = function (file) {
   return new Promise (async (resolve, reject) => {
@@ -12,7 +13,8 @@ export const UploadFile = function (file) {
 
     let params = {
       file_name: file.name,
-      mime: file.type
+      mime: file.type,
+      file: file
     }
 
     try {
@@ -23,10 +25,9 @@ export const UploadFile = function (file) {
     }
 
     try {
-      let fileBase64 = await toBase64(file, true)
-      params.file = fileBase64
+      params.file = await toBase64(file, true)
     } catch (e) {
-      console.log(e.message)
+      console.log(e)
       return reject(new Error('Error cargando archivo'))
     }
 

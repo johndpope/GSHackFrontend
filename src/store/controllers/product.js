@@ -22,29 +22,37 @@ let getters = {
 
 //functions receive context and params
 let actions = {
-  async all ({ commit }, params) {
+  async addProduct ({ commit }, params) {
     try {
-      commit('setItems', [])
-      await db.collection('orders').onSnapshot((snapshot) => {
-        let orders = []
-        snapshot.forEach((doc) => {
-          orders.push({
-            id: doc.id,
-            user: doc.data().user,
-            status: doc.data().status,
-            items: doc.data().items,
-          })
-        })
-        commit('setItems', orders)
-      })
+      console.log('imagen', params.imagen)
+      let res = await Vue.request.post(`product`, params.imagen)
+      if(res.data.success) {
+        console.log(res)
+        console.log('Id', res.data.product.Id)
+        console.log('idOrder', params.idOrder)
+        let info = {
+          value :
+          {
+            IdProduct: res.data.product.Id,
+            idOrder: params.idOrder
+          }
+        }
+        let product = await Vue.request.post('addProducto', info)
+        console.log(product)
+        if(product.data.success && params.callback) params.callback(res.data)
+      } else if (params.callback) {
+        params.callback({error: `Error agregando ${resource_name}.`})
+      }
     } catch (e) {
-      commit('setItems', [])
+      if(params.callback)
+        params.callback({error: `Ocurrió un error agregando ${resource_name}.`})
       console.error(e)
     }
   },
   async get ({ commit }, params) {
     console.log(params)
-    await db.collection('products').doc(params.file).get().then(doc => {
+    await db.collection('products').get().then(doc => {
+    //await db.collection('products').doc(params.file).get().then(doc => {
       if (!doc.exists) {
         if(params.callback) params.callback({error: `No se econtró el ${resource_name}.`})
       } else {
