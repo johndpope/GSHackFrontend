@@ -135,9 +135,8 @@
       },
       async loadFile () {
         try {
-          this.image_file = await UploadFile.call(this, this.image_file)
-          console.log(this.image_file)
-          //this.addProduct()
+          this.image_file = 'https://botlers-qa.s3.us-west-1.amazonaws.com/1566763869060qr.jpg' //await UploadFile.call(this, this.image_file)
+          this.addProduct()
         } catch (e) {
           this.$message.error(e.message)
         }
@@ -146,11 +145,11 @@
         console.log(this.image_file)
 
         let self = this
-        let imagen = { url: self.image_file }
+        let imagen = { "url": self.image_file }
 
         this['product/addProduct']({
           imagen: imagen,
-          idOrder: self.order.id,
+          idOrder: self.order_id,
           callback: res => {
             if(res.error) {
               self.$message.error(res.error)

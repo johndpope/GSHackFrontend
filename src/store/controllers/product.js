@@ -26,18 +26,15 @@ let actions = {
     try {
       console.log('imagen', params.imagen)
       let res = await Vue.request.post(`product`, params.imagen)
-      if(res.data.success) {
+      if(res.data.product.Id) {
         console.log(res)
         console.log('Id', res.data.product.Id)
         console.log('idOrder', params.idOrder)
         let info = {
-          value :
-          {
-            IdProduct: res.data.product.Id,
-            idOrder: params.idOrder
-          }
+          idProduct: res.data.product.Id,
+          idOrder: params.idOrder
         }
-        let product = await Vue.request.post('addProducto', info)
+        let product = await Vue.request.post('addProduct', info)
         console.log(product)
         if(product.data.success && params.callback) params.callback(res.data)
       } else if (params.callback) {

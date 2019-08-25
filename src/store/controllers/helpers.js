@@ -1,9 +1,8 @@
 //libraries
 import Vue from 'vue'
 import axios from 'axios'
-import store from '../store/store'
-import router from '../router'
-import { validAccess } from "./path-manager";
+import store from '../store'
+import router from '../../router'
 
 const request = axios.create({
   baseURL: 'https://qaenterprise.botlers.io/'//process.env.VUE_APP_API
