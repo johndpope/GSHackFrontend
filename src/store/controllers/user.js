@@ -57,12 +57,11 @@ let actions = {
   },
   async create ({ commit }, params) {
 
-    await db.collection('users').add({ value: {
+    await db.collection('users').add({
         name: params.name,
         telephone: params.phone,
         address: params.address,
-      }
-    }).then((response) => {
+      }).then((response) => {
       if (response) {
         if(params.callback) params.callback(response)
       } else {

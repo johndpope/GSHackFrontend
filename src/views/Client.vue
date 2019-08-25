@@ -145,7 +145,7 @@
         console.log(this.image_file)
 
         let self = this
-        let imagen = { "url": self.image_file }
+        let imagen = { "url": self.image_file };
 
         this['product/addProduct']({
           imagen: imagen,
